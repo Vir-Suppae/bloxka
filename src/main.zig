@@ -50,6 +50,17 @@ pub fn main(_: std.process.Init) !void {
 
         rot = rot.normalize();
 
+        const speed = 10.0 * rl.getFrameTime();
+
+        if (rl.isKeyDown(.q)) rot = rl.Quaternion.fromAxisAngle(forward, -3.14 * rl.getFrameTime()).multiply(rot);
+        if (rl.isKeyDown(.e)) rot = rl.Quaternion.fromAxisAngle(forward, 3.14 * rl.getFrameTime()).multiply(rot);
+
+        if (rl.isKeyDown(.w)) pos = pos.add(forward.scale(speed));
+        if (rl.isKeyDown(.s)) pos = pos.subtract(forward.scale(speed));
+
+        if (rl.isKeyDown(.a)) pos = pos.add(right.scale(speed));
+        if (rl.isKeyDown(.d)) pos = pos.subtract(right.scale(speed));
+
         cam.position = pos;
         cam.target = pos.add(forward);
         cam.up = up;
@@ -61,6 +72,6 @@ pub fn main(_: std.process.Init) !void {
         defer rl.endMode3D();
 
         rl.clearBackground(.ray_white);
-        rl.drawGrid(100, 100);
+        rl.drawGrid(10, 10);
     }
 }
